@@ -1,0 +1,48 @@
+#######################################
+# Syntax Coloring Map For SL018
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+SL018 KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+seekTag KEYWORD2
+selectTag KEYWORD2
+authenticate KEYWORD2
+readBlock KEYWORD2
+readPage KEYWORD2
+writeBlock KEYWORD2
+writePage KEYWORD2
+reset KEYWORD2
+led KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+MIFARE_1K LITERAL1
+MIFARE_PRO LITERAL1
+MIFARE_ULTRALIGHT LITERAL1
+MIFARE_4K LITERAL1
+MIFARE_PROX LITERAL1
+MIFARE_DESFIRE LITERAL1
+
+OK LITERAL1
+NO_TAG LITERAL1
+LOGIN_OK LITERAL1
+LOGIN_FAIL LITERAL1
+READ_FAIL LITERAL1
+WRITE_FAIL LITERAL1
+CANT_VERIFY LITERAL1
+COLLISION LITERAL1
+KEY_FAIL LITERAL1
+NO_LOGIN LITERAL1
+NO_VALUE LITERAL1
+
+                                      
