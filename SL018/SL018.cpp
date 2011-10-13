@@ -3,7 +3,8 @@
  *
  * 	@file		SL018.cpp
  *  @author	marc@marcboon.com
- *  @date		April 2010
+ *  @modified fil@rezox.com (Filipe Laborde-Basto) [to make binary safe]
+ *  @date		August 2011
  *
  *  @see		http://www.stronglink.cn/english/sl018.htm
  *  @see		http://www.stronglink.cn/english/sl030.htm
@@ -16,7 +17,6 @@
 // local prototypes
 void arrayToHex(char *s, byte array[], byte len);
 char toHex(byte b);
-
 
 /**	Constructor.
  *
@@ -248,14 +248,15 @@ void SL018::readPage(byte page)
  *	than 15 characters.
  *
  *	@param block Block number
- *	@param message Null-terminated string of up to 15 characters
+ *	@param message string of 16 characters (binary safe)
  */
 void SL018::writeBlock(byte block, const char* message)
 {
 	data[0] = 18;
 	data[1] = CMD_WRITE16;
 	data[2] = block;
-	strncpy((char*)data + 3, message, 15);
+	//strncpy((char*)data + 3, message, 15); // not binary safe
+	memcpy( (char*)data + 3, message, 16 );
 	data[18] = 0;
 	transmitData();
 }
@@ -265,14 +266,15 @@ void SL018::writeBlock(byte block, const char* message)
  *	This command is used for Mifare Ultralight tags which have 4 byte pages.
  *
  *	@param page Page number
- *	@param message Null-terminated string of up to 3 characters
+ *	@param message String of 4 characters
  */
 void SL018::writePage(byte page, const char* message)
 {
 	data[0] = 6;
 	data[1] = CMD_WRITE4;
 	data[2] = page;
-	strncpy((char*)data + 3, message, 3);
+	//strncpy((char*)data + 3, message, 3);  // not binary safe
+	memcpy( (char*)data + 3, message, 4 );	
 	data[6] = 0;
 	transmitData();
 }
@@ -319,6 +321,13 @@ void SL018::sendCommand(byte cmd)
 
 /**	Transmit a packet to the SL018.
  */
+ /*
+ 	data[0] = 18;
+	data[1] = CMD_WRITE16;
+	data[2] = block;
+	strncpy((char*)data + 3, message, 15);
+	data[18] = 0;
+	*/
 void SL018::transmitData()
 {
 	// wait until at least 20ms passed since last I2C transmission
@@ -330,9 +339,10 @@ void SL018::transmitData()
 
 	// transmit packet with checksum
 	Wire.beginTransmission(address);
+		
 	for (int i = 0; i <= data[0]; i++)
 	{
-		Wire.send(data[i]);
+		Wire.send(data[i]);	
 	}
 	Wire.endTransmission();
 
@@ -340,7 +350,7 @@ void SL018::transmitData()
 	if (debug)
 	{
 		Serial.print("> ");
-		printArrayHex(data, data[0] + 1);
+		printArrayHex( data, data[0] + 1);
 		Serial.println();
 	}
 }
