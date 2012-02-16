@@ -2,13 +2,17 @@
  *	@file		SL018.h
  *	@brief	Header file for	SL018 library
  *	@author	Marc Boon <http://www.marcboon.com>
- *	@date		April 2010
+ *	@date		February 2012
  */
 
 #ifndef	SL018_h
 #define	SL018_h
 
+#if defined(ARDUINO) && ARDUINO >= 100
+#include "Arduino.h"
+#else
 #include "WProgram.h"
+#endif
 
 #define SIZE_PACKET 19
 

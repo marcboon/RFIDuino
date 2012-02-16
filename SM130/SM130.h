@@ -2,13 +2,17 @@
  * 	@file	SM130.h
  * 	@brief	Header file for SM130 library
  *	@author	Marc Boon <http://www.marcboon.com>
- *	@date	May 2009
+ *	@date	February 2012
  */
 
 #ifndef SM130_h
 #define SM130_h
 
+#if defined(ARDUINO) && ARDUINO >= 100
+#include "Arduino.h"
+#else
 #include "WProgram.h"
+#endif
 
 #define SIZE_PAYLOAD 18 // maximum payload size of I2C packet
 #define SIZE_PACKET (SIZE_PAYLOAD + 2) // total I2C packet size, including length byte and checksum

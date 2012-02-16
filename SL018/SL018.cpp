@@ -4,7 +4,7 @@
  * 	@file		SL018.cpp
  *  @author	marc@marcboon.com
  *  @modified fil@rezox.com (Filipe Laborde-Basto) [to make binary safe]
- *  @date		August 2011
+ *  @date		February 2012
  *
  *  @see		http://www.stronglink.cn/english/sl018.htm
  *  @see		http://www.stronglink.cn/english/sl030.htm
@@ -342,7 +342,11 @@ void SL018::transmitData()
 		
 	for (int i = 0; i <= data[0]; i++)
 	{
-		Wire.send(data[i]);	
+#if defined(ARDUINO) && ARDUINO >= 100
+		Wire.write(data[i]);
+#else
+		Wire.send(data[i]);
+#endif
 	}
 	Wire.endTransmission();
 
@@ -371,12 +375,20 @@ byte SL018::receiveData(byte length)
 	if(Wire.available())
 	{
 		// get length	of packet
+#if defined(ARDUINO) && ARDUINO >= 100
+		data[0] = Wire.read();
+#else
 		data[0] = Wire.receive();
+#endif
 		
 		// get data
 		for (byte i = 1; i <= data[0]; i++)
 		{
+#if defined(ARDUINO) && ARDUINO >= 100
+			data[i] = Wire.read();
+#else
 			data[i] = Wire.receive();
+#endif
 		}
 
 		// show received packet for debugging

@@ -2,7 +2,7 @@
  * 	@file	SM130.cpp
  * 	@brief	SM130 library for Arduino
  *	@author	Marc Boon <http://www.marcboon.com>
- *	@date	May 2009
+ *	@date	February 2012
  *
  *	<p>
  *	Controls a SonMicro SM130/mini RFID reader or RFIDuino by I2C
@@ -370,10 +370,18 @@ void SM130::transmitData()
 	Wire.beginTransmission(address);
 	for (int i = 0; i < len; i++)
 	{
+#if defined(ARDUINO) && ARDUINO >= 100
+		Wire.write(data[i]);
+#else
 		Wire.send(data[i]);
+#endif
 		sum += data[i];
 	}
+#if defined(ARDUINO) && ARDUINO >= 100
+	Wire.write(sum);
+#else
 	Wire.send(sum);
+#endif
 	Wire.endTransmission();
 
 	// show transmitted packet for debugging
@@ -407,7 +415,11 @@ byte SM130::receiveData(byte length)
 	{
 		for (byte i = 0; i < n;)
 		{
+#if defined(ARDUINO) && ARDUINO >= 100
+			data[i++] = Wire.read();
+#else
 			data[i++] = Wire.receive();
+#endif
 		}
 
 		// show received packet for debugging
