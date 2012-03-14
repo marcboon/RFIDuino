@@ -19,11 +19,9 @@
  *	@see	http://rfid.marcboon.com
  */
 
-extern "C"
-{
 #include <Wire.h>
 #include <string.h>
-}
+
 #include "SM130.h"
 
 // local functions
